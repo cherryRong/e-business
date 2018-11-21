@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>SHOP 管理中心 - 商品分类 </title>
+<base href="/admin/" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="styles/general.css" rel="stylesheet" type="text/css" />
+<link href="styles/main.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+
+<h1>
+<span class="action-span"><a href="{:url('add')}">添加分类</a></span>
+<span class="action-span1"><a href="{:url('Index/index')}" target="_parent">SHOP 管理中心</a> </span><span id="search_id" class="action-span1"> - 商品分类 </span>
+<div style="clear:both"></div>
+</h1>
+
+<form method="post" action="" name="listForm">
+<!-- start ad position list -->
+	<div class="list-div" id="listDiv">
+		<table width="100%" cellspacing="1" cellpadding="2" id="list-table">
+			<tbody>
+				<tr>
+					<th>分类名称</th>
+          <th>分类描述</th>
+					<th>是否显示</th>
+					<th>操作</th>
+				</tr>
+        {foreach $catList as $val}
+				<tr align="center" class="0" id="0_1" parent_id="{$val.parent_id}"  cat_id="{$val.cat_id}">
+					<td align="left" class="first-cell">
+                     <!-- 缩进 -->
+                       <?php  echo str_repeat('&nbsp;',substr_count($val['depath'],'-')*3) ?>
+						<img src="images/menu_minus.gif" class='imgs' cat_id='{$val.cat_id}' id="icon_0_1" width="9" height="9" border="0" style="margin-left:0em" >
+						<span><a href="goods.php?act=list&amp;cat_id=1">{$val.cat_name}</a></span>
+					 </td>
+					<td width="10%"><span>{$val.cat_desc}</span></td>
+					
+					<td width="10%">{$val.is_show}</td>
+					
+					<td width="24%" align="center">
+						<a href="category.php?act=move&amp;cat_id=1">转移商品</a> |
+						<a href="category.php?act=edit&amp;cat_id=1">编辑</a> |
+						<a href="javascript:;" onclick="listTable.remove(1, '您确认要删除这条记录吗?')" title="移除">移除</a>
+					</td>
+				</tr>
+	      {/foreach}
+	</tbody>
+  </table>
+</div>
+</form>
+
+  </table>
+</div>
+</form>
+
+
+<div id="footer">
+	版权所有 &copy; 2006-2013 软工教育 - 高级PHP - </div>
+</div>
+
+</body>
+</html>
+<script src="js/jquery-1.10.2.js"></script>
+<script>
+	$(function(){
+		 $(".imgs").click(function(){
+		 	var cat_id = $(this).attr('cat_id');
+		 	var flag = $(this).attr('src');
+		 	var  obj = $(this);
+            myToggle(cat_id,flag,obj);
+		 })
+
+		 //伸缩展示
+		 function myToggle(cat_id,flag,obj){
+
+		 	
+            //符号的变换
+		 	if(flag=="images/menu_minus.gif"){
+		 		//收起来-hide()
+                obj.attr('src','images/menu_plus.gif');
+                //拿到所有的tr
+				 	var tr = $('tr');
+				 	tr.each(function(k,v){
+				 		if(tr.eq(k).attr('parent_id')==cat_id){
+				 			tr.eq(k).hide();
+				 			var cat = tr.eq(k).attr('cat_id');
+				 			myToggle(cat,flag,obj)
+				 		}
+				 	})
+		 	}else{
+		 		//展开-show()
+		 		obj.attr('src','images/menu_minus.gif')
+		 		//拿到所有的tr
+				 var tr = $('tr');
+				 tr.each(function(k,v){
+				 	if(tr.eq(k).attr('parent_id')==cat_id){
+				 			tr.eq(k).show();
+				 			//拿cat_id
+				 			var cat = tr.eq(k).attr('cat_id');
+				 			//myToggle(cat,flag,obj)
+				 			checkChild(cat);
+				 		}
+				 })
+		 	}
+		 }
+
+		 //检查是否有孩子
+		 function checkChild(cat){
+		 	var tr = $("tr");
+		 	var bol = false;
+		 	//检查是否有孩子
+		 	tr.each(function(k,v){
+		 		if(tr.eq(k).attr('parent_id')==cat){
+                    bol = true;
+		 		}
+		 	})
+		 	//改符号
+		 	if(bol){
+               var img = $(".imgs");
+               img.each(function(k,v){
+               	   if(img.eq(k).attr('cat_id')==cat){
+               	   	//改成+号
+               	   	    img.eq(k).attr('src','images/menu_plus.gif');
+               	   }
+               })
+		 	}
+
+		 }
+	})
+</script>

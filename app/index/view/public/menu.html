@@ -1,0 +1,52 @@
+<div class="menu_bg">
+	<div class="menu">
+    	<!--Begin 商品分类详情 Begin-->    
+    	<div class="nav">
+        	<div class="nav_t" >全部商品分类</div>
+            <div class="leftNav"    {if condition="$flag eq 0"} style="display:none"  {/if} >
+                <ul>      
+                {foreach $cat as $key => $value}
+                    <li>
+                    
+                    	<div class="fj">
+                        	<span class="n_img"><span></span><img src="images/nav{$key+1}.png" /></span>
+                            <!-- 一级分类 -->
+                            <span class="fl">{$value.cat_name}</span>
+                        </div>
+                        <div class="zj">
+                            <div class="zj_l">
+                            {foreach $value.son as $val}
+                                <div class="zj_l_c">
+                                    <!-- 二级分类 -->
+                                    <h2>  <a href="{:url('Cat/index',['cat_id'=>$val['cat_id']])}">{$val.cat_name}</a></h2>
+                                      {foreach $val.son as $v}
+                                      <!-- 三级分类 -->
+                                        <a href="{:url('Cat/index',['cat_id'=>$v['cat_id']])}">{$v.cat_name}</a>|
+                                      {/foreach}
+                                </div>
+                            {/foreach}
+                            </div>
+                            <div class="zj_r">
+                                <a href="#"><img src="images/n_img1.jpg" width="236" height="200" /></a>
+                                <a href="#"><img src="images/n_img2.jpg" width="236" height="200" /></a>
+                            </div>
+                        </div>
+                    </li>
+                {/foreach}	
+                </ul>            
+            </div>
+        </div>  
+        <!--End 商品分类详情 End-->                                                     
+    	<ul class="menu_r">                                                                                                                                               
+        	<li><a href="Index.html">首页</a></li>
+            <li><a href="Food.html">美食</a></li>
+            <li><a href="Fresh.html">生鲜</a></li>
+            <li><a href="HomeDecoration.html">家居</a></li>
+            <li><a href="SuitDress.html">女装</a></li>
+            <li><a href="MakeUp.html">美妆</a></li>
+            <li><a href="Digital.html">数码</a></li>
+            <li><a href="GroupBuying.html">团购</a></li>
+        </ul>
+        <div class="m_ad">中秋送好礼！</div>
+    </div>
+</div>
